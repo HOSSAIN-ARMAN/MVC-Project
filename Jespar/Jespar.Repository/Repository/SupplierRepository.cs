@@ -16,9 +16,33 @@ namespace Jespar.Repository.Repository
             _dbContext.Suppliers.Add(supplier);
             return _dbContext.SaveChanges() > 0;
         }
-        public bool Delete(Supplier supplier)
+        public bool Delete(int id)
         {
-            return true;
+            Supplier aSupplier = _dbContext.Suppliers.FirstOrDefault((c => c.Id == id));
+            _dbContext.Suppliers.Remove(aSupplier);
+            return _dbContext.SaveChanges()>0;
+        }
+        public bool Update(Supplier supplier)
+        {
+            Supplier aSupplier = _dbContext.Suppliers.FirstOrDefault((c => c.Id == supplier.Id));
+            if(aSupplier != null)
+            {
+                aSupplier.Code = supplier.Code;
+                aSupplier.Name = supplier.Name;
+                aSupplier.Address = supplier.Address;
+                aSupplier.Email = supplier.Email;
+                aSupplier.Person = supplier.Person;
+                aSupplier.PersonContact = supplier.PersonContact;
+            }
+            return _dbContext.SaveChanges() > 0;
+        }
+        public List<Supplier> GetAll()
+        {
+            return _dbContext.Suppliers.ToList();
+        }
+        public Supplier GetById(int id)
+        {
+            return _dbContext.Suppliers.FirstOrDefault((c => c.Id == id));
         }
     }
 }
